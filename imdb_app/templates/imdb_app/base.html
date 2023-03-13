@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{% block title %}Information Retrieval Project{% endblock %}</title>
+  <style>
+    /* Header styles */
+    header {
+      background-color: #222;
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+    }
+    header h1 {
+      margin: 0;
+    }
+
+    /* Footer styles */
+    footer {
+      background-color: #eee;
+      padding: 10px;
+      text-align: center;
+    }
+
+    /* Content styles */
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Project Group 4</h1>
+  </header>
+
+  <div class="container">
+    {% block content %}
+    {% endblock %}
+  </div>
+
+  <footer>
+    &copy; 2023 UCR
+  </footer>
+</body>
+</html>

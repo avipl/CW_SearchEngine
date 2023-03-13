@@ -1,0 +1,57 @@
+{% extends 'imdb_app/base.html' %}
+
+
+{% block content %}
+<style>
+    .movie-details {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+    }
+
+    .movie-poster {
+      width: 200px;
+      height: 275px;
+      margin-right: 20px;
+    }
+
+    .movie-info {
+      flex: 1;
+    }
+    a.read-more {
+        display: block;
+        background-color: #333;
+        color: #fff;
+        padding: 10px;
+        border-radius: 5px;
+        text-align: center;
+        text-decoration: none;
+        font-size: 16px;
+        width: 150px;
+    }
+
+    a.read-more:hover {
+        background-color: #666;
+    }
+
+  </style>
+
+<h2>Search Results for "{{search_query}}" and Search Type is {{search_type}}</h2>
+
+{%for i in result%}
+<div class="movie-details">
+    <div class="movie-info">
+      <h2>{{i.0}}</h2>
+      <p>Score : {{i.1}}</p>
+      <p>Director Name : {{i.3}}</p>
+      <p> Release year : {{i.2}}</p>
+      <a href={{i.4}} class="read-more">IMDB link</a>
+
+    </div>
+  </div>
+{%endfor%}
+
+
+
+{% endblock %}

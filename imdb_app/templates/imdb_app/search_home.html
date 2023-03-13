@@ -1,0 +1,98 @@
+{% extends 'imdb_app/base.html' %}
+
+{% block content %} 
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>My Website</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background-color: #ffffff;
+      }
+      .search-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      .search-box {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        background-color: white;
+        border: 2px solid black;
+        border-radius: 30px;
+        box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
+        padding: 30px;
+      }
+      .search-box input[type=text] {
+        padding: 10px;
+        border: 1px solid black;;
+        border-radius: 30px;
+        width: 500px;
+        margin-right: 5px;
+        font-size: 16px;
+      }
+      .search-box button[type=submit] {
+        background-color: #f2f2f2;
+        border: none;
+        color: #757575;
+        padding: 10px 20px;
+        border-radius: 30px;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+        font-size: 16px;
+        cursor: pointer;
+      }
+      .search-box button[type=submit]:hover {
+        background-color: #e8e8e8;
+      }
+      .search-box label {
+        font-size: 16px;
+        margin-right: 10px;
+      }
+      .radio-group {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 10px;
+      }
+      .radio-group label {
+        margin-right: 10px;
+        margin-left: 10px;
+      }
+      .radio-group input[type=radio] {
+        margin-right: 5px;
+        margin-left: 5px;
+      }
+      .radio-group input[type=radio]:first-child {
+        margin-right: 100px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="search-container">
+      <div class="search-box">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/aa/UC_Riverside_logo.svg" alt="ucr Logo">
+        <form action="{% url 'search_results' %}" method="get">
+          <input type="text" name="q" placeholder="Search...">
+          <div class="radio-group">
+            <label for="bert">BERT</label>
+            <input type="radio" name="search-type" id="bert" value="bert" checked>
+            <label for="lucene">Lucene</label>
+            <input type="radio" name="search-type" id="lucene" value="lucene">
+          </div>
+          <button type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
+
+{% endblock %}
