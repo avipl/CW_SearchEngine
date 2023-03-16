@@ -1,3 +1,28 @@
+import sys, lucene
+import os, shutil
+import pandas as pd
+import time
+import json
+
+from java.lang import System
+from java.nio.file import Path, Paths
+from org.apache.lucene.analysis.core import WhitespaceAnalyzer
+from org.apache.lucene.analysis.miscellaneous import LimitTokenCountAnalyzer
+from org.apache.lucene.analysis.standard import StandardAnalyzer
+from org.apache.lucene.document import \
+    Document, Field, StoredField, StringField, TextField, FieldType
+from org.apache.lucene.index import \
+    IndexOptions, IndexWriter, IndexWriterConfig, DirectoryReader, \
+    FieldInfos, MultiFields, MultiTerms, Term
+from org.apache.lucene.util import PrintStreamInfoStream
+from org.apache.lucene.queryparser.classic import \
+    MultiFieldQueryParser, QueryParser
+from org.apache.pylucene.queryparser.classic import PythonQueryParser
+from org.apache.lucene.search import BooleanClause, IndexSearcher, TermQuery
+from org.apache.lucene.store import MMapDirectory, SimpleFSDirectory, NIOFSDirectory
+from org.apache.lucene.util import BytesRefIterator
+from org.apache.lucene.search.similarities import BM25Similarity
+from org.apache.lucene.document import IntPoint, FloatPoint
 
 class CustomQueryParser(PythonQueryParser):
     def __init__(self, f, a):
@@ -35,7 +60,7 @@ class CustomQueryParser(PythonQueryParser):
 
 
 def lucene_query(query, k=5):
-    searcher = IndexSearcher(DirectoryReader.open('./lucene_index'))
+    searcher = IndexSearcher(DirectoryReader.open('/home/cs242/lucene_test/IR_Project/imdb_app/lucene_index'))
     
     parser = CustomQueryParser('all_fields', StandardAnalyzer())
     parsed_query = parser.parse(query)
@@ -60,3 +85,8 @@ def lucene_query(query, k=5):
         })
         
     return json.dumps(topkdocs)
+
+if __name__ == '__main__':
+    lucene.initVM()
+    
+    lucene_query("The menu")

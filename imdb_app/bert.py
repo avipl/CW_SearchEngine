@@ -7,6 +7,7 @@ import os, shutil
 import sys
 import json
 import math
+import sqlite3
 
 def convert_to_embedding(query):
     tokenizer = AutoTokenizer.from_pretrained('sentence-transformers/all-distilroberta-v1') # you can change the model here
@@ -34,27 +35,33 @@ def convert_to_embedding(query):
 
 def bert_query(query, k = 5):
     query_embedding = convert_to_embedding(query)
-    index_loaded = faiss.read_index("bert_test.index")
+    index_loaded = faiss.read_index("/home/cs242/lucene_test/IR_Project/imdb_app/bert_test.index")
     scores, indices = index_loaded.search(query_embedding[None, :], k)
+    conn = sqlite3.connect('/home/cs242/lucene_test/IR_Project/imdb_app/mydb.sqlite')
+    conn.row_factory = sqlite3.Row
+    cur = conn.cursor()
+    
     topkdocs = []
-    cnt = 0;
+    cnt = 0
     for i in indices[0]:
         if i >= 0:
+            cur.execute('SELECT * FROM movie_data WHERE "index" = :id', {"id": str(i)})
+            row = cur.fetchone()
             topkdocs.append({
                 "score": str(scores[0][cnt]),
-                "name": df.iloc[i]["movie_name"],
-                "year": str(df.iloc[i]["year"]),
-                "rating": str(df.iloc[i]["rating"]),
-                "votes": str(df.iloc[i]["votes"]),
-                "runtime": str(df.iloc[i]["runtime"]),
-                "certificate": df.iloc[i]["certificate"],
-                "cast": df.iloc[i]["cast"],
-                "director": df.iloc[i]["director"],
-                "genre": df.iloc[i]["genre"],
-                "plot": df.iloc[i]["plot"],
-                "movie_id": df.iloc[i]["movie_id"]
+                "name": row["movie_name"],
+                "year": str(row["year"]),
+                "rating": str(row["rating"]),
+                "votes": str(row["votes"]),
+                "runtime": str(row["runtime"]),
+                "certificate": row["certificate"],
+                "cast": row["cast"],
+                "director": row["director"],
+                "genre": row["genre"],
+                "plot": row["plot"],
+                "movie_id": row["movie_id"]
             })
-        cnt = cnt + 1
+        cnt = cnt + 1 
     return json.dumps(topkdocs)
     
 
