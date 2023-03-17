@@ -6,10 +6,10 @@ class Search():
         self.type =  search_type
     def res_return(self):
         if self.type=="bert":
-            li=bert.bert_query(self.query)
-            return li
+            res_json=bert.bert_query(self.query)
+            return res_json
         else:
-            li=lucene.lucene_query(self.query)
-            return li
+            res_json=lucene.lucene_query(self.query)
+            return res_json
             
     
