@@ -60,7 +60,9 @@ class CustomQueryParser(PythonQueryParser):
 
 
 def lucene_query(query, k=5):
-    searcher = IndexSearcher(DirectoryReader.open('/home/cs242/lucene_test/IR_Project/imdb_app/lucene_index'))
+    lucene.initVM()
+    indexDir = NIOFSDirectory(Paths.get('/home/cs242/lucene_test/IR_Project/imdb_app/lucene_index'))
+    searcher = IndexSearcher(DirectoryReader.open(indexDir))
     
     parser = CustomQueryParser('all_fields', StandardAnalyzer())
     parsed_query = parser.parse(query)
@@ -85,8 +87,3 @@ def lucene_query(query, k=5):
         })
         
     return json.dumps(topkdocs)
-
-if __name__ == '__main__':
-    lucene.initVM()
-    
-    lucene_query("The menu")

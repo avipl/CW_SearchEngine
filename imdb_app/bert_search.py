@@ -63,7 +63,3 @@ def bert_query(query, k = 5):
             })
         cnt = cnt + 1 
     return json.dumps(topkdocs)
-    
-
-    
-

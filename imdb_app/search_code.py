@@ -1,4 +1,4 @@
-from . import bert, lucene
+from . import bert_search, lucene_search
 
 class Search():
     def __init__(self, search_query, search_type):
