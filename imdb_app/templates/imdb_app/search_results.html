@@ -40,6 +40,7 @@
 {{result.0}}
 {%for entry in result%}
 <div class="movie-details">
+    <img src="{{entry.image_url}}" alt="{{entry.name}}" class="movie-poster">
     <div class="movie-info">
       <h2>{{entry.name}}</h2>
       <p>Score : {{entry.score}}</p>
