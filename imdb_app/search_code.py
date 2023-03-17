@@ -1,7 +1,7 @@
 from . import bert, lucene
 import requests
 from bs4 import BeautifulSoup
-import json
+import ast
 
 class Search():
     def __init__(self, search_query, search_type):
@@ -10,7 +10,8 @@ class Search():
 
     def add_images(self,res_json):
         movie_urls=[]
-        for i in res_json:
+        res_json_l=ast.literal_eval(res_json)
+        for i in res_json_l:
             movie_urls.append("https://imdb.com/title/"+i["movie_id"])
         headers = {"User-Agent":"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36", "Accept-Encoding":"gzip, deflate", "Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8", "DNT":"1","Connection":"close", "Upgrade-Insecure-Requests":"1"}
         ct=0
@@ -23,9 +24,9 @@ class Search():
             n_soup=BeautifulSoup(n_response.text, 'html.parser')
             iid=n_url.split("/")[-2]+"-curr"
             img=n_soup.find("img",{"data-image-id":iid})
-            res_json[ct]["image_url"]=img["src"]
+            res_json_l[ct]["image_url"]=img["src"]
             ct+=1
-        return res_json
+        return res_json_l
         
 
     def res_return(self):
