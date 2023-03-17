@@ -3,6 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 import ast
 
+
 class Search():
     def __init__(self, search_query, search_type):
         self.query = search_query
