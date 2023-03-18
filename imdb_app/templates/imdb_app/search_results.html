@@ -36,8 +36,8 @@
 
   </style>
 
-<h2>Search Results for "{{search_query}}" and Search Type is {{search_type}}</h2>
-{{result.0}}
+<h2>Search Results for "{{search_query}}", using {{search_type}} index</h2>
+<h5>Showing top "{{top_k}}" results</h5>
 {%for entry in result%}
 <div class="movie-details">
     <img src="{{entry.image_url}}" alt="{{entry.name}}" class="movie-poster">
@@ -46,7 +46,7 @@
       <p>Score : {{entry.score}}</p>
       <p>Director Name : {{entry.director}}</p>
       <p> Release year : {{entry.year}}</p>
-      <a href="https://imdb.com/title/"{{entry.movie_id}} class="read-more">IMDB link</a>
+      <a href={{ "https://imdb.com/title/"|add:entry.movie_id }} class="read-more">IMDB link</a>
 
     </div>
   </div>
