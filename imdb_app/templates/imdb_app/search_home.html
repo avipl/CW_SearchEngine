@@ -59,36 +59,64 @@
       }
       .radio-group {
         display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-top: 10px;
-      }
+        align-items: baseline;
+        max-width: 50%;
+        float:left;
+        margin-right: 20px;
+    }
       .radio-group label {
-        margin-right: 10px;
-        margin-left: 10px;
-      }
-      .radio-group input[type=radio] {
         margin-right: 5px;
         margin-left: 5px;
       }
-      .radio-group input[type=radio]:first-child {
-        margin-right: 100px;
+      .radio-group input[type=radio] {
+        margin-right: 2px;
+        margin-left: 2px;
       }
+        
+        .float-contain{
+            margin: 10px 5px 10px 5px;
+            padding: 5px
+        }
+        
+        .dd{
+            display: flex;
+            max-width: 50%;
+            align-items: baseline;
+            margin-top:2px;
+        }
+        
+        .search-box button[type=submit]{
+            color: white;
+            background-color: #2857b7;
+            margin: 10px;
+        }
     </style>
   </head>
   <body>
     <div class="search-container">
       <div class="search-box">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/a/aa/UC_Riverside_logo.svg" alt="ucr Logo">
+        <img width='200px' height='200px' src="https://drive.google.com/uc?export=view&id=1yUrjnTvN-wNwtbWrYEiEyLmUDSZlhJ64" alt="ucr Logo">
         <form action="{% url 'search_results' %}" method="get">
           <input type="text" name="q" placeholder="Search...">
-          <div class="radio-group">
-            <label for="bert">BERT</label>
-            <input type="radio" name="search-type" id="bert" value="bert" checked>
-            <label for="lucene">Lucene</label>
-            <input type="radio" name="search-type" id="lucene" value="lucene">
-          </div>
-          <button type="submit">Search</button>
+          <div class='float-contain'>
+            <div class="radio-group" >
+                <input type="radio" name="search-type" id="bert" value="bert" checked>
+                <label for="bert">BERT</label>
+                <input type="radio" name="search-type" id="lucene" value="lucene">
+                <label for="lucene">Lucene</label>
+            </div>
+            <div class="dd" >
+                <label for="cars">top-k:</label>
+
+                <select name="top_k" id="top_k">
+                    <option value="2">2</option>
+                    <option value="4">4</option>
+                    <option value="5" selected>5</option>
+                    <option value="10">10</option>
+                </select>
+            </div>
+        <div>
+          <button type="submit" class='btn'>Search</button>
         </form>
       </div>
     </div>

@@ -35,7 +35,7 @@ def convert_to_embedding(query):
 
 def bert_query(query, k = 5):
     query_embedding = convert_to_embedding(query)
-    index_loaded = faiss.read_index("/home/cs242/lucene_test/IR_Project/imdb_app/bert_test.index")
+    index_loaded = faiss.read_index("/home/cs242/lucene_test/IR_Project/imdb_app/bert_index.index")
     scores, indices = index_loaded.search(query_embedding[None, :], k)
     conn = sqlite3.connect('/home/cs242/lucene_test/IR_Project/imdb_app/mydb.sqlite')
     conn.row_factory = sqlite3.Row
@@ -63,7 +63,3 @@ def bert_query(query, k = 5):
             })
         cnt = cnt + 1 
     return json.dumps(topkdocs)
-    
-
-    
-
