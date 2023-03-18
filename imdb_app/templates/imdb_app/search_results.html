@@ -40,18 +40,16 @@
 <h5>Showing top "{{top_k}}" results</h5>
 {%for entry in result%}
 <div class="movie-details">
-    <img src="{{entry.image_url}}" alt="{{entry.name}}" class="movie-poster">
     <div class="movie-info">
       <h2>{{entry.name}}</h2>
       <p>Score : {{entry.score}}</p>
       <p>Director Name : {{entry.director}}</p>
       <p> Release year : {{entry.year}}</p>
+      <p> Rating : {{entry.rating}}</p>
       <a href={{ "https://imdb.com/title/"|add:entry.movie_id }} class="read-more">IMDB link</a>
 
     </div>
   </div>
 {%endfor%}
-
-
 
 {% endblock %}
