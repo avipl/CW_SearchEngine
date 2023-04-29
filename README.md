@@ -9,4 +9,4 @@ Data is sourced form IMDB.com. More information will be added once demo is live.
 
 ## Demo
 
-Live demo coming soon.
+Demo will be live soon.
