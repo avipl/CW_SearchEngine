@@ -1,10 +1,12 @@
 # Search Engine With PyLucene & BERT
 
-Search engine for movies. Data is indexed using Lucene and BERT. The user can choose the index type during search.
-Data is sourced form IMDB.com.
+This project is a search engine for movies. The movie data is indexed using Lucene and BERT. Users can choose the index type.
 
 Most of the work done in this project for a gradute level Information Retreival class. It's been further enhanced as personal project. 
 
+
+Data is sourced form IMDB.com. More information will be added once demo is live.
+
 ## Demo
 
-Live demo coming soon
+Live demo coming soon.
