@@ -35,9 +35,9 @@ def convert_to_embedding(query):
 
 def bert_query(query, k = 5):
     query_embedding = convert_to_embedding(query)
-    index_loaded = faiss.read_index("/home/cs242/lucene_test/IR_Project/imdb_app/bert_index.index")
+    index_loaded = faiss.read_index("/home/avipl1994/CW_SearchEngine/imdb_app/bert_index.index")
     scores, indices = index_loaded.search(query_embedding[None, :], k)
-    conn = sqlite3.connect('/home/cs242/lucene_test/IR_Project/imdb_app/mydb.sqlite')
+    conn = sqlite3.connect('/home/avipl1994/CW_SearchEngine/imdb_app/mydb.sqlite')
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
     
@@ -59,7 +59,8 @@ def bert_query(query, k = 5):
                 "director": row["director"],
                 "genre": row["genre"],
                 "plot": row["plot"],
-                "movie_id": row["movie_id"]
+                "movie_id": row["movie_id"],
+                "movie_url": row["movie_url"]
             })
         cnt = cnt + 1 
     return json.dumps(topkdocs)

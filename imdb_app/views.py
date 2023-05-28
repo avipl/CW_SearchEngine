@@ -4,12 +4,17 @@ from . import search_code
 # Create your views here.
 
 def index(response):
-    return render(response,"imdb_app/search_home.html",{})
+    search_query = 'rating: [8.0 TO *]'
+    search_type = 'lucene'
+    top_k = 5
+    s=search_code.Search(search_query, search_type, top_k)
+    s_result=s.res_return()
+    return render(response,"imdb_app/search_home.html",{'result' : s_result})
 
 
 def search_results(request):
     search_query = request.GET.get('q')
-    search_type = request.GET.get('search-type')
+    search_type = request.GET.get('search_type')
     top_k = int(request.GET.get('top_k'))
     s=search_code.Search(search_query, search_type, top_k)
     s_result=s.res_return()

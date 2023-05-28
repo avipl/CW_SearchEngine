@@ -19,7 +19,7 @@ from org.apache.lucene.queryparser.classic import \
     MultiFieldQueryParser, QueryParser
 from org.apache.pylucene.queryparser.classic import PythonQueryParser
 from org.apache.lucene.search import BooleanClause, IndexSearcher, TermQuery
-from org.apache.lucene.store import MMapDirectory, SimpleFSDirectory, NIOFSDirectory
+from org.apache.lucene.store import MMapDirectory, NIOFSDirectory
 from org.apache.lucene.util import BytesRefIterator
 from org.apache.lucene.search.similarities import BM25Similarity
 from org.apache.lucene.document import IntPoint, FloatPoint
@@ -60,8 +60,8 @@ class CustomQueryParser(PythonQueryParser):
 
 
 def lucene_query(query, k=5):
-    lucene.initVM()
-    indexDir = NIOFSDirectory(Paths.get('/home/cs242/lucene_test/IR_Project/imdb_app/lucene_index'))
+    lucene.getVMEnv().attachCurrentThread()
+    indexDir = NIOFSDirectory(Paths.get('/home/avipl1994/CW_SearchEngine/imdb_app/lucene_index'))
     searcher = IndexSearcher(DirectoryReader.open(indexDir))
     
     parser = CustomQueryParser('all_fields', StandardAnalyzer())
@@ -83,7 +83,8 @@ def lucene_query(query, k=5):
             "director": doc.get("director"),
             "genre": doc.get("genre"),
             "plot": doc.get("plot"),
-            "movie_id": doc.get("movie_id")
+            "movie_id": doc.get("movie_id"),
+            "movie_url": doc.get("movie_url")
         })
         
     return json.dumps(topkdocs)

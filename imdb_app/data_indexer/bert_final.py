@@ -48,7 +48,7 @@ def create_bert_index(dir, sentences, index):
     mean_pooled = summed / summed_mask
     
     index.add(mean_pooled)
-    faiss.write_index(index,"/home/cs242/lucene_test/IR_Project/imdb_app/bert_index.index")
+    faiss.write_index(index,"./../bert_index.index")
 
 def convert_to_embedding(query):
     tokenizer = AutoTokenizer.from_pretrained('sentence-transformers/all-distilroberta-v1') # you can change the model here
@@ -114,15 +114,15 @@ def concat_values_noNaFilter(df):
     return snippet
     
 if __name__ == '__main__':
-    df = pd.read_csv('/home/cs242/lucene_test/IR_Project/imdb_app/sample.csv', na_filter=False)
-    df = df.drop_duplicates() ## VJ_edit
+    df = pd.read_csv('./sample.csv', na_filter=False)
+    df = df.drop_duplicates()
     
     sentences = concat_values_noNaFilter(df)
     del df
     index = faiss.IndexFlatIP(768)
     print("Creating index...")
     start_time = time.time()
-    steps = 50
+    steps = 10
     for row_cnt in range(0, len(sentences), steps):
         print(str(row_cnt) + "/" + str(len(sentences)))
         create_bert_index(dir, sentences[row_cnt:row_cnt+steps], index)
@@ -132,13 +132,13 @@ if __name__ == '__main__':
     print("-" + str(len(sentences)) + " docs indexed in " + str(end_time - start_time) + "s")
 
     #Re-load the data into memory
-    df = pd.read_csv('/home/cs242/lucene_test/IR_Project/imdb_app/sample.csv', na_filter=False)
+    df = pd.read_csv('./sample.csv', na_filter=False)
     df = df.drop_duplicates()
     
     #Load data in sqllite
     print("-Creating database...")
     table_name = 'movie_data'
-    conn = sqlite3.connect('/home/cs242/lucene_test/IR_Project/imdb_app/mydb.sqlite')
+    conn = sqlite3.connect('../mydb.sqlite')
     sql_query = f'Create table if not Exists {table_name} (cast text, cast_id text, cast_url text, certificate text, director text, director_id text, director_url text, genre text, gross text, meta_score text, movie_id text, movie_name text, movie_url text, plot text, rating text, runtime text, votes text, year text)'
     conn.execute(sql_query)
     df.to_sql(table_name, conn, if_exists='replace', index=True)
