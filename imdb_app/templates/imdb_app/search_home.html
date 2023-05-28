@@ -2,125 +2,208 @@
 
 {% block content %} 
 
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8">
-    <title>My Website</title>
-    <style>
-      body {
-        margin: 0;
-        padding: 0;
-        font-family: Arial, sans-serif;
-        background-color: #ffffff;
-      }
-      .search-container {
+<style>
+    .search-container {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        height: 100vh;
-      }
-      .search-box {
+
+        height: calc(var(--view-height) * 0.5);
+    }
+    .search-box {
         display: flex;
         justify-content: center;
         align-items: center;
         flex-direction: column;
-        background-color: white;
-        border: 2px solid black;
-        border-radius: 30px;
-        box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
+        background-color: var(--color-background);
         padding: 30px;
-      }
-      .search-box input[type=text] {
+    }
+    .search-box input[type=text] {
         padding: 10px;
-        border: 1px solid black;;
+        border: 1px solid var(--color-border);
         border-radius: 30px;
         width: 500px;
         margin-right: 5px;
         font-size: 16px;
-      }
-      .search-box button[type=submit] {
-        background-color: #f2f2f2;
+    }
+    .search-box button[type=submit] {
         border: none;
-        color: #757575;
+        color: var(--color-text);
+        background-color: var(--primary);
         padding: 10px 20px;
         border-radius: 30px;
-        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-        font-size: 16px;
+        border: none;
         cursor: pointer;
-      }
-      .search-box button[type=submit]:hover {
-        background-color: #e8e8e8;
-      }
-      .search-box label {
+    }
+    .search-box button[type=submit]:hover {
+        background-color: var(--primary-hover);
+    }
+    .search-box label {
         font-size: 16px;
         margin-right: 10px;
-      }
-      .radio-group {
+    }
+    .radio-group {
         display: flex;
         align-items: baseline;
         max-width: 50%;
         float:left;
         margin-right: 20px;
     }
-      .radio-group label {
+    .radio-group label {
         margin-right: 5px;
         margin-left: 5px;
-      }
-      .radio-group input[type=radio] {
+    }
+    .radio-group input[type=radio] {
         margin-right: 2px;
         margin-left: 2px;
-      }
-        
-        .float-contain{
-            margin: 10px 5px 10px 5px;
-            padding: 5px
-        }
-        
-        .dd{
-            display: flex;
-            max-width: 50%;
-            align-items: baseline;
-            margin-top:2px;
-        }
-        
-        .search-box button[type=submit]{
-            color: white;
-            background-color: #2857b7;
-            margin: 10px;
-        }
-    </style>
-  </head>
-  <body>
-    <div class="search-container">
-      <div class="search-box">
-        <img width='200px' height='200px' src="https://drive.google.com/uc?export=view&id=1yUrjnTvN-wNwtbWrYEiEyLmUDSZlhJ64" alt="ucr Logo">
-        <form action="{% url 'search_results' %}" method="get">
-          <input type="text" name="q" placeholder="Search...">
-          <div class='float-contain'>
-            <div class="radio-group" >
-                <input type="radio" name="search-type" id="bert" value="bert" checked>
-                <label for="bert">BERT</label>
-                <input type="radio" name="search-type" id="lucene" value="lucene">
-                <label for="lucene">Lucene</label>
-            </div>
-            <div class="dd" >
-                <label for="cars">top-k:</label>
+        accent-color: var(--primary);
+    }
+    .float-contain{
+        display: flex;
+        flex-direction: row;
+        margin: 10px 5px 10px 5px;
+        padding: 5px
+    }
+    
+    .caro-belt{
+        display: inline-flex;
+        width: var(--view-width);
+    }
 
-                <select name="top_k" id="top_k">
-                    <option value="2">2</option>
-                    <option value="4">4</option>
-                    <option value="5" selected>5</option>
-                    <option value="10">10</option>
-                </select>
-            </div>
-        <div>
-          <button type="submit" class='btn'>Search</button>
-        </form>
-      </div>
+    .caro {
+        display: inline-flex;
+        width: calc(var(--view-width) - 10);
+        overflow: hidden;
+    }
+
+    .slider {
+        transition: transform 0.2s;
+        white-space: nowrap;
+    }
+
+    .card {
+        display: inline-flex;
+        cursor: pointer;
+
+        align-items: center;
+        justify-content: center;
+        margin-right: 5px;
+    }
+
+    .movie-poster{
+        width: calc(var(--view-width)/10);
+        height: calc(var(--view-height) * .20);
+    }
+
+    .arrow-pan{
+        display: inline-flex;
+        background-color: var(--color-background-soft) 0.5;
+        align-items: center;
+        width: 4vw;
+        margin-left: 1vw;
+    }
+
+    .chev{
+        display: block;
+        width: 20px;
+        height: 20px;
+        border-style: solid;
+        border-width: 2px 2px 0px 0px;
+        border-color: var(--primary);
+
+        opacity: 1.0;
+    }
+
+    .chev-right{
+        transform: rotate(45deg);
+    }
+
+    .chev-left{
+        transform: rotate(-135deg);
+    }
+
+    .top-movies-header{
+        justify-content: left;
+        margin-bottom: 2rem;
+    }
+
+    .main-input{
+        display: inline-flex;
+    }
+
+    .logo{
+        width: 200px;
+        height: 200px;
+    }
+    @media (min-width: 1024px) {
+        .arrow-pan{
+            display: none;
+        }
+    }
+
+    #mdi-movie-search{
+        margin-bottom: 2rem;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        #mdi-movie-search{
+            fill: var(--color-text);
+        }
+    }
+</style>
+    <div class="search-container">
+        <div class="search-box">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="mdi-movie-search" width="200" height="200" viewBox="0 0 24 24"><path d="M11.03 20H4C2.9 20 2 19.1 2 18L2 6C2 4.9 2.9 4 4 4H5L7 8H10L8 4H10L12 8H15L13 4H15L17 8H20L18 4H22V13.05C20.85 11.22 18.82 10 16.5 10C12.92 10 10 12.92 10 16.5C10 17.79 10.38 19 11.03 20M23.39 22L22 23.39L18.88 20.32C18.19 20.75 17.37 21 16.5 21C14 21 12 19 12 16.5S14 12 16.5 12 21 14 21 16.5C21 17.38 20.75 18.21 20.31 18.9L23.39 22M19 16.5C19 15.12 17.88 14 16.5 14S14 15.12 14 16.5 15.12 19 16.5 19 19 17.88 19 16.5Z"/></svg>
+            <form action="{% url 'search_results' %}" method="get">
+                <div class="main-input">
+                    <input type="text" name="q" placeholder="e.g Interstellar" required>
+                    <button type="submit" class='btn'>Search</button>
+                </div>
+                <div class='float-contain'>
+                    <div class="radio-group" >
+                        <input type="radio" name="search_type" id="bert" value="bert" checked>
+                        <label for="bert">BERT</label>
+                        <input type="radio" name="search_type" id="lucene" value="lucene">
+                        <label for="lucene">Lucene</label>
+                    </div>
+                    <div>
+                        <label for="top_k">top-k:</label>
+
+                        <select name="top_k" id="top_k">
+                            <option value="2">2</option>
+                            <option value="4">4</option>
+                            <option value="5" selected>5</option>
+                            <option value="10">10</option>
+                        </select>
+                    </div>
+                </div>
+                
+            </form>
+        </div>
     </div>
-  </body>
-</html>
+    <div class="top-movies-header"><h1>Top Rated Movies</h1></div>
+    <div class="top-movie-container">
+        <div>
+            <div class="caro-belt">
+                <div class="arrow-pan">
+                    <div class="chev chev-left" @click="toLeft"></div>
+                </div>
+                <div class="caro">
+                    <div class="slider" ref="slider" :style="{'transform': `translateX(` + movement +`px)`}">
+                            {%for entry in result%}
+                                <div class="card">
+                                    <a href={{ "https://imdb.com/title/"|add:entry.movie_id }} target="_blank"><img src="{{entry.movie_url}}" class="movie-poster"></a>
+                                </div>
+                            {%endfor%}
+                    </div>
+                </div>
+                <div class="arrow-pan">
+                    <div class="chev chev-right" @click="toRight"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}

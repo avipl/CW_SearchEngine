@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+import lucene
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +26,7 @@ SECRET_KEY = "django-insecure-*s^nc&j+owq296or+k9_nf44l&es7s&#s51lj8=tb+p5kam03$
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['class-044.cs.ucr.edu']
+ALLOWED_HOSTS = ['34.168.223.192', 'localhost', 'searchengine.avi-portfolio.net', 'www.searchengine.avi-portfolio.net']
 
 
 # Application definition
@@ -116,3 +117,5 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+lucene.initVM()

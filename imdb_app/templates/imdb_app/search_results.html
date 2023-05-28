@@ -3,53 +3,78 @@
 {% block content %}
 <style>
     .movie-details {
-      display: flex;
+      display: inline-flex;
       flex-direction: row;
-      justify-content: flex-start;
+      justify-content: left;
       align-items: center;
+      background-color: var(--color-background-soft);
+      box-shadow: 2px 2px 2px var(--color-background-mute);
+
+      margin-bottom: 5px;
+      padding: 10px;
     }
 
     .movie-poster {
-      width: 200px;
-      height: 275px;
-      margin-right: 20px;
+      width: 70px;
+      height: 100px;
+      margin: 2rem;
     }
 
     .movie-info {
-      flex: 1;
-    }
-    a.read-more {
-        display: block;
-        background-color: #333;
-        color: #fff;
-        padding: 10px;
-        border-radius: 5px;
-        text-align: center;
-        text-decoration: none;
-        font-size: 16px;
-        width: 150px;
     }
 
-    a.read-more:hover {
-        background-color: #666;
+    a.movie-title>h2{
+       color: var(--primary);
     }
 
+    a{
+      text-decoration: none;
+    }
+
+    a.movie-title>h2:hover {
+        color: var(--primary-hover);
+    }
+
+    a.movie-title>h2:visited {
+        color: var(--primary-hover);
+    }
+
+    .response{
+      display: grid;
+      justify-content: center;
+      color: var(--color-heading);
+
+      margin-bottom: 2rem;
+    }
+
+    .results{
+      display: grid;
+      justify-content: center;
+      grid-template-columns: 0.4fr 0.4fr;
+      column-gap: 2vw;
+      row-gap: 2vh;
+    }
   </style>
-
-<h2>Search Results for "{{search_query}}", using {{search_type}} index</h2>
-<h5>Showing top "{{top_k}}" results</h5>
-{%for entry in result%}
-<div class="movie-details">
+  <div class="response">
+    <h2>Search Results for "{{search_query}}" | {{search_type}} index</h2>
+    <h4>Showing top "{{top_k}}" results</h4>
+  </div>
+  <div class="results">
+  {%for entry in result%}
+  <div class="movie-details">
+    <div>
+      <a href={{ "https://imdb.com/title/"|add:entry.movie_id }} target="_blank"><img class="movie-poster" src="{{entry.movie_url}}"></a>
+    </div>
     <div class="movie-info">
-      <h2>{{entry.name}}</h2>
+      <a href={{ "https://imdb.com/title/"|add:entry.movie_id }} target="_blank" class="movie-title"><h2>{{entry.name}}</h2></a>
       <p>Score : {{entry.score}}</p>
       <p>Director Name : {{entry.director}}</p>
       <p> Release year : {{entry.year}}</p>
       <p> Rating : {{entry.rating}}</p>
-      <a href={{ "https://imdb.com/title/"|add:entry.movie_id }} class="read-more">IMDB link</a>
-
     </div>
   </div>
-{%endfor%}
-
-{% endblock %}
+  {%endfor%}
+</div>
+  
+  {% endblock %}
+  

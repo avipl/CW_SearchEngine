@@ -20,7 +20,7 @@ from org.apache.lucene.queryparser.classic import \
 from org.apache.pylucene.queryparser.classic import PythonQueryParser
 from org.apache.lucene.search import BooleanClause, IndexSearcher, TermQuery, MatchAllDocsQuery
 from org.apache.lucene import search
-from org.apache.lucene.store import MMapDirectory, SimpleFSDirectory, NIOFSDirectory
+from org.apache.lucene.store import MMapDirectory, NIOFSDirectory
 from org.apache.lucene.util import BytesRefIterator
 from org.apache.lucene.search.similarities import BM25Similarity
 from org.apache.lucene.document import IntPoint, FloatPoint
@@ -38,7 +38,7 @@ def data_cleaning(file):
 
     print("-Reading file " + file + "...")
     print("-Droppping columns...")
-    df.drop(["cast_url", "director_url", "movie_url", "meta_score", "gross"], axis=1, inplace=True)
+    df.drop(["meta_score", "gross"], axis=1, inplace=True)
     df = df.drop_duplicates(subset='movie_id', keep="first")
 
     print("-Processing null values...")
@@ -101,7 +101,7 @@ def create_index(dir, df):
     if not os.path.exists(dir):
         os.mkdir(dir)
 
-    store = SimpleFSDirectory(Paths.get(dir))
+    store = NIOFSDirectory(Paths.get(dir))
     analyzer = StandardAnalyzer()
     config = IndexWriterConfig(analyzer)
     config.setOpenMode(IndexWriterConfig.OpenMode.CREATE)
@@ -134,8 +134,7 @@ def create_index(dir, df):
         
         # not useful for search 
         movie_id = row['movie_id']
-        director_id = row['director_id']
-        cast_id = row['cast_id']
+        movie_url = row['movie_url']
         
         # wanna tokenize
         cast = row['cast']
@@ -162,8 +161,7 @@ def create_index(dir, df):
         doc.add(StoredField('rating', rating)) 
         
         doc.add(Field('movie_id', str(movie_id), idType))
-        doc.add(Field('director_id', str(director_id), idType))
-        doc.add(Field('cast_id', str(cast_id), idType))
+        doc.add(Field('movie_url', str(movie_url), idType))
         
         doc.add(Field('cast', str(cast), storeType))
         doc.add(Field('director', str(director), storeType))
@@ -179,44 +177,13 @@ def create_index(dir, df):
     writer.close()
     return doc_cnt
     
-def retrieve(storedir):
-    searchDir = NIOFSDirectory(Paths.get(storedir))
-    searcher = IndexSearcher(DirectoryReader.open(searchDir))
-    
-    #parser = CustomQueryParser('all_fields', StandardAnalyzer())
-
-    #parsed_query = parser.parse(query)
-
-    #topDocs = searcher.search(parsed_query, 5).scoreDocs
-    #topDocs = searcher.scoreDocs
-
-    #topkdocs = []
-    #for hit in topDocs:
-    #    doc = searcher.doc(hit.doc)
-    #    topkdocs.append({
-    #        "score": hit.score,
-    #        "name": doc.get("name"),
-    #        "year": doc.get("year"),
-    #        "rating": doc.get("rating"),
-    #        "votes": doc.get("votes"),
-    #        "runtime": doc.get("runtime"),
-    #        "certificate": doc.get("certificate"),
-    #        "cast": doc.get("cast"),
-    #        "director": doc.get("director"),
-    #        "genre": doc.get("genre"),
-    #        "plot": doc.get("plot"),
-    #        "movie_id": doc.get("movie_id")
-    #    })
-        
-    print(json.dumps(topkdocs, indent=4))
-    
 if __name__ == '__main__':
     lucene.initVM()
     
     base_dir = os.path.dirname(os.path.abspath(sys.argv[0]))      
-    df = data_cleaning("/home/cs242/lucene_test/IR_Project/imdb_app/sample.csv")
+    df = data_cleaning("./sample.csv")
     print("-Creating index...")
     start_time = time.time()
-    num_doc = create_index("/home/cs242/lucene_test/IR_Project/imdb_app/lucene_index", df)
+    num_doc = create_index("./../lucene_index", df)
     end_time = time.time();
     print("-" + str(num_doc) + " docs indexed in " + str(end_time - start_time) + "s")
